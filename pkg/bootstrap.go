@@ -3,6 +3,7 @@ package pkg
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"math/rand"
 	"net"
 	"sync"
@@ -28,11 +29,17 @@ func Bootstrap(ctx context.Context) error {
 	doneWg.Add(2)
 
 	go func() {
-		startTtyd(ctx, ttydListenPort, credential)
+		err := startTtyd(ctx, ttydListenPort, credential)
+		if err != nil {
+			slog.Error("failed to start ttyd", "error", err)
+		}
 		doneWg.Done()
 	}()
 	go func() {
-		startCloudflared(ctx, ttydListenPort)
+		err := startCloudflared(ctx, ttydListenPort)
+		if err != nil {
+			slog.Error("failed to start cloudflared", "error", err)
+		}
 		doneWg.Done()
 	}()
 

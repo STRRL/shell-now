@@ -7,6 +7,16 @@ import (
 	"os"
 )
 
+func prepareTtyd(ctx context.Context) error {
+	// TODO: noop
+	return nil
+}
+
+func prepareCloudflared(ctx context.Context) error {
+	// TODO: noop
+	return nil
+}
+
 func download(ctx context.Context, url string, output string) error {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
