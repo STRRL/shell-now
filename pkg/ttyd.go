@@ -10,18 +10,23 @@ import (
 
 func startTtyd(ctx context.Context,
 	listenPort int,
-	credential string,
+	username string,
+	password string,
 ) error {
-	slog.Info("starting ttyd", "port", listenPort, "credential", credential)
+	slog.Debug("starting ttyd", "port", listenPort, "username", username, "password", password)
+
 	startupCommand, err := fetchAvailableStartupCommand(ctx)
 	if err != nil {
 		return fmt.Errorf("fetch available startup command: %w", err)
 	}
-	// execute ttyd <options> sh
-	cmd := exec.CommandContext(ctx, "ttyd", "--writable", "--port", fmt.Sprintf("%d", listenPort), "--credential", credential, startupCommand)
 
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	// execute ttyd <options> <startupCommand>
+	cmd := exec.CommandContext(ctx, "ttyd", "--writable", "--port", fmt.Sprintf("%d", listenPort), "--credential", fmt.Sprintf("%s:%s", username, password), startupCommand)
+
+	if os.Getenv("DEBUG") != "" {
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+	}
 
 	return cmd.Run()
 }

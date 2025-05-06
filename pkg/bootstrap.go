@@ -11,6 +11,7 @@ import (
 )
 
 func Bootstrap(ctx context.Context) error {
+	slog.Info("starting shell-now")
 
 	if err := prepareCloudflared(ctx); err != nil {
 		return err
@@ -23,24 +24,33 @@ func Bootstrap(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("get available port for ttyd listen on: %w", err)
 	}
-	credential := "sn:" + randomDigitalString(6)
 
 	doneWg := sync.WaitGroup{}
 	doneWg.Add(2)
 
+	username := "shell-now"
+	password := randomDigitalString(6)
+
 	go func() {
-		err := startTtyd(ctx, ttydListenPort, credential)
+		err := startTtyd(ctx, ttydListenPort, username, password)
 		if err != nil {
 			slog.Error("failed to start ttyd", "error", err)
 		}
 		doneWg.Done()
 	}()
+
+	quickTunnelDomain := make(chan string)
 	go func() {
-		err := startCloudflared(ctx, ttydListenPort)
+		err := startCloudflared(ctx, ttydListenPort, quickTunnelDomain)
 		if err != nil {
 			slog.Error("failed to start cloudflared", "error", err)
 		}
 		doneWg.Done()
+	}()
+
+	go func() {
+		domain := <-quickTunnelDomain
+		slog.Info("shell-now is ready", "domain", domain, "username", username, "password", password)
 	}()
 
 	doneWg.Wait()
