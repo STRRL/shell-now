@@ -21,6 +21,7 @@ Coming soon: prebuilt binaries for macOS, Linux, Windows, ARM64
 With docker:
 
 ```bash
+docker run cr.strrl.dev/strrl/shell-now:latest
 ```
 
 ## 📚 Why?
