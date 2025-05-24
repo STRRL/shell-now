@@ -2,18 +2,49 @@ package pkg
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
 )
 
+var (
+	ttydReleaseUrls = map[string]string{
+		"linux/amd64": "https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64",
+		"linux/arm64": "https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.aarch64",
+	}
+	cloudflaredReleaseUrls = map[string]string{
+		"linux/amd64": "https://github.com/cloudflare/cloudflared/releases/download/2025.5.0/cloudflared-linux-amd64",
+		"linux/arm64": "https://github.com/cloudflare/cloudflared/releases/download/2025.5.0/cloudflared-linux-arm64",
+	}
+)
+
 func prepareTtyd(ctx context.Context) error {
-	// TODO: noop
+	url, ok := ttydReleaseUrls[getPlatform()]
+	if !ok {
+		return fmt.Errorf("no ttyd release url for %s", getPlatform())
+	}
+
+	// download to ~/.local/bin/ttyd
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+	download(ctx, url, fmt.Sprintf("%s/.local/bin/ttyd", home))
 	return nil
 }
 
 func prepareCloudflared(ctx context.Context) error {
-	// TODO: noop
+	url, ok := cloudflaredReleaseUrls[getPlatform()]
+	if !ok {
+		return fmt.Errorf("no cloudflared release url for %s", getPlatform())
+	}
+
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+	download(ctx, url, fmt.Sprintf("%s/.local/bin/cloudflared", home))
 	return nil
 }
 

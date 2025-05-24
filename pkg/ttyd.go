@@ -13,6 +13,12 @@ func startTtyd(ctx context.Context,
 	username string,
 	password string,
 ) error {
+	ttydBinary, err := lookupBinary(ctx, "ttyd")
+	if err != nil {
+		return fmt.Errorf("lookup ttyd binary: %w", err)
+	}
+	slog.Debug("ttyd binary", "path", ttydBinary)
+
 	slog.Debug("starting ttyd", "port", listenPort, "username", username, "password", password)
 
 	startupCommand, err := fetchAvailableStartupCommand(ctx)
@@ -21,7 +27,7 @@ func startTtyd(ctx context.Context,
 	}
 
 	// execute ttyd <options> <startupCommand>
-	cmd := exec.CommandContext(ctx, "ttyd", "--writable", "--port", fmt.Sprintf("%d", listenPort), "--credential", fmt.Sprintf("%s:%s", username, password), startupCommand)
+	cmd := exec.CommandContext(ctx, ttydBinary, "--writable", "--port", fmt.Sprintf("%d", listenPort), "--credential", fmt.Sprintf("%s:%s", username, password), startupCommand)
 
 	if os.Getenv("DEBUG") != "" {
 		cmd.Stdout = os.Stdout

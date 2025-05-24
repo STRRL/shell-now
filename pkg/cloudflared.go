@@ -16,10 +16,16 @@ func startCloudflared(
 	ttydListenPort int,
 	quickTunnelDomain chan<- string,
 ) error {
+	cloudflaredBinary, err := lookupBinary(ctx, "cloudflared")
+	if err != nil {
+		return fmt.Errorf("lookup cloudflared binary: %w", err)
+	}
+	slog.Debug("cloudflared binary", "path", cloudflaredBinary)
+
 	slog.Debug("starting cloudflared", "ttyd_listen_port", ttydListenPort)
 
 	// execute cloudflared tunnel run --url http://localhost:ttydListenPort
-	cmd := exec.CommandContext(ctx, "cloudflared", "tunnel", "--url", fmt.Sprintf("http://localhost:%d", ttydListenPort))
+	cmd := exec.CommandContext(ctx, cloudflaredBinary, "tunnel", "--url", fmt.Sprintf("http://localhost:%d", ttydListenPort))
 
 	if os.Getenv("DEBUG") != "" {
 		cmd.Stdout = os.Stdout
