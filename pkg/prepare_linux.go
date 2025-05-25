@@ -31,6 +31,11 @@ func prepareTtyd(ctx context.Context) error {
 		return err
 	}
 	download(ctx, url, fmt.Sprintf("%s/.local/bin/ttyd", home))
+	// chmod +x ~/.local/bin/ttyd
+	err = os.Chmod(fmt.Sprintf("%s/.local/bin/ttyd", home), 0755)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -45,6 +50,11 @@ func prepareCloudflared(ctx context.Context) error {
 		return err
 	}
 	download(ctx, url, fmt.Sprintf("%s/.local/bin/cloudflared", home))
+	// chmod +x ~/.local/bin/cloudflared
+	err = os.Chmod(fmt.Sprintf("%s/.local/bin/cloudflared", home), 0755)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
