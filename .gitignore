@@ -25,3 +25,5 @@ go.work.sum
 .env
 
 out
+# Added by goreleaser init:
+dist/
