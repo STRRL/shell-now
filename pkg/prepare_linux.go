@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"os"
 )
@@ -20,6 +21,14 @@ var (
 )
 
 func prepareTtyd(ctx context.Context) error {
+	// lookup command ttyd
+	_, err := lookupBinary(ctx, "ttyd")
+	if err == nil {
+		// ttyd is already installed
+		return nil
+	}
+
+	slog.Info("ttyd not found, downloading to ~/.local/bin/ttyd")
 	url, ok := ttydReleaseUrls[getPlatform()]
 	if !ok {
 		return fmt.Errorf("no ttyd release url for %s", getPlatform())
@@ -40,6 +49,14 @@ func prepareTtyd(ctx context.Context) error {
 }
 
 func prepareCloudflared(ctx context.Context) error {
+	// lookup command cloudflared
+	_, err := lookupBinary(ctx, "cloudflared")
+	if err == nil {
+		// cloudflared is already installed
+		return nil
+	}
+
+	slog.Info("cloudflared not found, downloading to ~/.local/bin/cloudflared")
 	url, ok := cloudflaredReleaseUrls[getPlatform()]
 	if !ok {
 		return fmt.Errorf("no cloudflared release url for %s", getPlatform())
