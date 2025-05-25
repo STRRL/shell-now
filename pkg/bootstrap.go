@@ -34,7 +34,12 @@ func Bootstrap(ctx context.Context) error {
 	go func() {
 		err := startTtyd(ctx, ttydListenPort, username, password)
 		if err != nil {
-			slog.Error("failed to start ttyd", "error", err)
+			// if error is killed by signal, ignore it
+			if err.Error() == "signal: killed" {
+				slog.Info("ttyd was killed by signal")
+			} else {
+				slog.Error("failed to start ttyd", "error", err)
+			}
 		}
 		doneWg.Done()
 	}()
@@ -43,14 +48,25 @@ func Bootstrap(ctx context.Context) error {
 	go func() {
 		err := startCloudflared(ctx, ttydListenPort, quickTunnelDomain)
 		if err != nil {
-			slog.Error("failed to start cloudflared", "error", err)
+			if err.Error() == "signal: killed" {
+				slog.Info("cloudflared was killed by signal")
+			} else {
+				slog.Error("failed to start cloudflared", "error", err)
+			}
 		}
 		doneWg.Done()
 	}()
 
 	go func() {
 		domain := <-quickTunnelDomain
-		slog.Info("shell-now is ready", "domain", domain, "username", username, "password", password)
+		// slog.Info("shell-now is ready", "domain", domain, "username", username, "password", password)
+		slog.Info("shell-now is ready to use")
+		slog.Info("--------------------------------")
+		slog.Info("USERNAME: " + username)
+		slog.Info("PASSWORD: " + password)
+		slog.Info("DOMAIN: " + domain)
+		slog.Info("--------------------------------")
+		slog.Info("use CTRL+C to stop the service")
 	}()
 
 	doneWg.Wait()
