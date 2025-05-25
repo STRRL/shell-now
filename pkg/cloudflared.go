@@ -58,10 +58,10 @@ func startCloudflared(
 	} else {
 		var err error
 		cloudflaredStderr, err = cmd.StderrPipe()
-		defer cloudflaredStderr.Close()
 		if err != nil {
 			return fmt.Errorf("get stderr pipe from cloudflared: %w", err)
 		}
+		defer cloudflaredStderr.Close()
 	}
 
 	go func() {
