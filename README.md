@@ -60,6 +60,10 @@ This tool exposes your local shell to the public internet.
 - Prefer read-only demos when possible
 - Avoid running this on sensitive systems
 
+## 🐛 Known Issues
+
+- **Safari Compatibility**: The web terminal currently has compatibility issues with Safari browser. Use Chrome, Firefox, or Edge for the best experience.
+
 ## 🙌 Contributing
 
 Pull requests, issues, and ideas are welcome!
