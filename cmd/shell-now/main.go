@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -9,6 +10,12 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/strrl/shell-now/pkg"
+)
+
+var (
+	version   = "dev"
+	commit    = "unknown"
+	buildTime = "unknown"
 )
 
 func main() {
@@ -25,8 +32,9 @@ func main() {
 	defer stop()
 
 	rootCmd := &cobra.Command{
-		Use:   "shell-now",
-		Short: "Shell Now is a simple command-line tool to expose your local shell to the public internet.",
+		Use:     "shell-now",
+		Short:   "Shell Now is a simple command-line tool to expose your local shell to the public internet.",
+		Version: version,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return pkg.Bootstrap(ctx)
 		},
@@ -92,6 +100,18 @@ PowerShell:
 		},
 	}
 	rootCmd.AddCommand(completionCmd)
+
+	// Add version command
+	versionCmd := &cobra.Command{
+		Use:   "version",
+		Short: "Print the version information of shell-now",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Printf("shell-now version %s\n", version)
+			fmt.Printf("git commit: %s\n", commit)
+			fmt.Printf("build time: %s\n", buildTime)
+		},
+	}
+	rootCmd.AddCommand(versionCmd)
 
 	// Execute with context
 	if err := rootCmd.ExecuteContext(ctx); err != nil {
