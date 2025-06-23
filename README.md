@@ -14,15 +14,32 @@ Ideal for quick debugging, remote terminal sharing, and Linux teaching demos.
 - 🔐 Optional password authentication
 - 💻 Runs any shell or custom command (e.g. `htop`, `matrix`, `bash`)
 
-## 📦 Usage / Installation
+## 📦 Installation
 
-Coming soon: prebuilt binaries for macOS, Linux, Windows, ARM64
+### Homebrew (macOS)
 
-With docker:
+```bash
+# Add this tap to your Homebrew
+brew tap strrl/collective
+
+# Install shell-now
+brew install shell-now
+
+# Start shell-now
+shell-now
+```
+
+### Docker
 
 ```bash
 docker run cr.strrl.dev/strrl/shell-now:latest
 ```
+
+**Note:** The Docker version runs in an isolated container environment separate from your host system. Use this for demos or when you want a sandboxed shell experience.
+
+### Manual Installation
+
+Coming soon: prebuilt binaries for macOS, Linux, Windows, ARM64
 
 ## 📚 Why?
 
