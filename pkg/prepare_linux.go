@@ -11,8 +11,8 @@ import (
 
 var (
 	ttydReleaseUrls = map[string]string{
-		"linux/amd64": "https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64",
-		"linux/arm64": "https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.aarch64",
+		"linux/amd64": "https://github.com/STRRL/ttyd/releases/download/v1.7.7-1/ttyd.x86_64",
+		"linux/arm64": "https://github.com/STRRL/ttyd/releases/download/v1.7.7-1/ttyd.aarch64",
 	}
 	cloudflaredReleaseUrls = map[string]string{
 		"linux/amd64": "https://github.com/cloudflare/cloudflared/releases/download/2025.5.0/cloudflared-linux-amd64",
