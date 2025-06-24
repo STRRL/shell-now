@@ -3,7 +3,8 @@
     "allow": [
       "WebFetch(domain:pkg.go.dev)",
       "Bash(make:*)",
-      "Bash(./out/shell-now:*)"
+      "Bash(./out/shell-now:*)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": []
   }

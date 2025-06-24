@@ -37,9 +37,17 @@ docker run cr.strrl.dev/strrl/shell-now:latest
 
 **Note:** The Docker version runs in an isolated container environment separate from your host system. Use this for demos or when you want a sandboxed shell experience.
 
-### Manual Installation
+### Quick Install
 
-Coming soon: prebuilt binaries for macOS, Linux, Windows, ARM64
+```bash
+# Auto-detect OS and architecture
+OS=$(uname -s); ARCH=$(uname -m)
+case $OS in Linux) OS="Linux";; Darwin) OS="Darwin";; esac
+case $ARCH in x86_64|amd64) ARCH="x86_64";; arm64|aarch64) ARCH="arm64";; esac
+curl -LO https://github.com/STRRL/shell-now/releases/latest/download/shell-now_${OS}_${ARCH}.tar.gz
+tar -xzf shell-now_${OS}_${ARCH}.tar.gz
+sudo install shell-now /usr/local/bin/shell-now && rm shell-now shell-now_${OS}_${ARCH}.tar.gz
+```
 
 ## 📚 Why?
 
