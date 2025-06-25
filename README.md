@@ -7,6 +7,12 @@ ShellNow is a tiny Go-powered CLI tool that helps you instantly start a temporar
 
 Ideal for quick debugging, remote terminal sharing, and Linux teaching demos.
 
+## 🎥 Demo
+
+[![Shell Now Demo](https://img.youtube.com/vi/fB19R72xKTE/0.jpg)](https://www.youtube.com/watch?v=fB19R72xKTE&ab_channel=strrlthedev)
+
+*It's a 3 min video, and it will take you 1.5 min with 2x speed, or 1.8 seconds at 100x speed.*
+
 ## ✨ Features
 
 - 🚀 One command to launch a public web shell
@@ -36,6 +42,10 @@ docker run cr.strrl.dev/strrl/shell-now:latest
 ```
 
 **Note:** The Docker version runs in an isolated container environment separate from your host system. Use this for demos or when you want a sandboxed shell experience.
+
+### Native App Alternative
+
+Are you an Apple fanboy and prefer a native app? See: https://github.com/amantus-ai/vibetunnel
 
 ### Quick Install
 
