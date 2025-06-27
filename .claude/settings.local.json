@@ -4,7 +4,10 @@
       "WebFetch(domain:pkg.go.dev)",
       "Bash(make:*)",
       "Bash(./out/shell-now:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(find:*)",
+      "Bash(true)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }

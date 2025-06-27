@@ -99,3 +99,15 @@ func download(ctx context.Context, url string, output string) error {
 	}
 	return nil
 }
+
+func prepareAsciinema(ctx context.Context) error {
+	// lookup command asciinema
+	_, err := lookupBinary(ctx, "asciinema")
+	if err == nil {
+		// asciinema is available
+		return nil
+	}
+
+	slog.Warn("asciinema not found in PATH, session recording will be disabled. Install asciinema to enable recording.")
+	return nil
+}
