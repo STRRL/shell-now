@@ -6,6 +6,8 @@ import (
 	"log/slog"
 	"math/rand"
 	"net"
+	"os"
+	"path/filepath"
 	"sync"
 	"time"
 )
@@ -17,6 +19,9 @@ func Bootstrap(ctx context.Context) error {
 		return err
 	}
 	if err := prepareTtyd(ctx); err != nil {
+		return err
+	}
+	if err := prepareAsciinema(ctx); err != nil {
 		return err
 	}
 
@@ -93,4 +98,23 @@ func randomDigitalString(length int) string {
 		b[i] = letters[r.Intn(len(letters))]
 	}
 	return string(b)
+}
+
+func ensureRecordingsDirectory() (string, error) {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+	
+	recordingsDir := filepath.Join(home, ".local", "share", "shell-now", "recordings")
+	err = os.MkdirAll(recordingsDir, 0755)
+	if err != nil {
+		return "", err
+	}
+	
+	return recordingsDir, nil
+}
+
+func generateRecordingFilename() string {
+	return fmt.Sprintf("shell-now-%s.cast", time.Now().Format("2006-01-02-15-04-05"))
 }

@@ -113,6 +113,32 @@ PowerShell:
 	}
 	rootCmd.AddCommand(versionCmd)
 
+	// Add replay command
+	replayCmd := &cobra.Command{
+		Use:   "replay [filename]",
+		Short: "Replay recorded shell sessions",
+		Long: `Replay recorded shell sessions using asciinema.
+
+Without arguments, replays the most recent recording.
+With filename argument, replays the specific recording.
+Use 'shell-now replay list' to see all available recordings.`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if len(args) == 0 {
+				// Replay latest recording
+				return pkg.ReplayLatestRecording(ctx)
+			}
+			
+			if args[0] == "list" {
+				// List all recordings
+				return pkg.PrintRecordingsList()
+			}
+			
+			// Replay specific recording
+			return pkg.ReplayRecording(ctx, args[0])
+		},
+	}
+	rootCmd.AddCommand(replayCmd)
+
 	// Execute with context
 	if err := rootCmd.ExecuteContext(ctx); err != nil {
 		os.Exit(1)
